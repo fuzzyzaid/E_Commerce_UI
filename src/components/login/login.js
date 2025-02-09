@@ -1,15 +1,58 @@
 import React,{useState} from 'react';
+import axios from "axios";
+import { useNavigate, Link } from "react-router-dom";
 import styles from "./login.module.css"; // Correct way
 
 
 const Login=()=>{
+    const path = useNavigate();
     const [email,setEmail]=useState("");
     const[password,setPassword]=useState("");
     const[formErrors,setFormErrors]=useState({});
 
- async function submit(e){
-    e.preventDefault();
- }
+    const validateForm = () => {
+        const errors = {};
+    
+        if (!email) {
+          errors.email = "Email is required.";
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          errors.email = "Invalid email address.";
+        }
+    
+        if (!password) {
+          errors.password = "Password is required.";
+        }
+    
+        setFormErrors(errors);
+        return Object.keys(errors).length === 0;
+      };
+
+      async function submit(e) {
+        e.preventDefault();
+    
+        if (validateForm()) {
+          const userCredentials = {
+            email,
+            password,
+          };
+    
+          try {
+            const response = await axios.post(`/login`, userCredentials);
+            if (response.data.message === "Invalid Credentials") {
+              alert("Invalid Credentials");
+            } 
+            else if (response.data.message === "User not found") {
+                alert("User not found");
+              } 
+            else {
+                path("/");
+              }
+          } catch (error) {
+            console.error("Error:", error);
+            alert("Something went wrong. Please try again.");
+          }
+        }
+      }
 
 
 
@@ -41,7 +84,11 @@ const Login=()=>{
                 )}
                 <input type="submit" value="Login" />
             </form>
-            <div></div>
+            <div id={styles.signLink}>
+            <Link to="/signup">
+              Don't have an Account. Click here to Signup{" "}
+            </Link>
+          </div>
         </div>
        
      </div>

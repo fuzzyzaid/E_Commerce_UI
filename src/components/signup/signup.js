@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import axios from "axios";
 import styles from "./signup.module.css";
+import { useNavigate, Link } from "react-router-dom";
 
 function Signup() {
+    const path = useNavigate();
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -55,6 +58,19 @@ function Signup() {
         phoneNumber,
       };
 
+      try {
+        const response = await axios.post("/signup", userData);
+        if (response.data === "User Already Exists") {
+          clearData();
+          alert("User Already Exists");
+        } 
+        else if (response.data === "User created successfully") {
+          path("/login");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Something went wrong. Please try again.");
+      }
       
     }
   }
@@ -110,6 +126,11 @@ function Signup() {
             )}
             <input type="submit" value="Signup" />
           </form>
+          <div id={styles.loginLink}>
+            <Link to="/login">
+              Already have an Account. Click here to Login{" "}
+            </Link>
+          </div>
         </div>
       </div>
     </>
