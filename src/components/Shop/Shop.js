@@ -1,13 +1,13 @@
 import React from 'react'
 import Header from '../Header/Header';
 
-function Home() {
+function Shop() {
   return (
     <div>
-      <Header />
-      <h1>Home</h1>
+      <Header/>
+      <h1>Shop</h1>
     </div>
   )
 }
 
-export default Home
+export default Shop

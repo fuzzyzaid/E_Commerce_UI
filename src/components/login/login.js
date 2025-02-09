@@ -1,10 +1,10 @@
 import React,{useState} from 'react';
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import styles from "./login.module.css"; // Correct way
+import styles from "./Login.module.css"; // Correct way
 
 
-const Login=()=>{
+function Login() {
     const path = useNavigate();
     const [email,setEmail]=useState("");
     const[password,setPassword]=useState("");
