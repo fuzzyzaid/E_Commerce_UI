@@ -57,6 +57,10 @@ function Shop() {
     }
   };
 
+  const handleProductClick = (product) => {
+    path("/productdetails", { state: { product } });
+  };
+
   return (
     <>
       <Header />
@@ -84,13 +88,13 @@ function Shop() {
           {/* Product Display */}
           <div className="row">
             {(currentCategory === "All" ? displayedProducts : filteredProducts).map((product) => (
-              <div key={product.id} className="col-md-4 mb-4">
+              <div key={product.productId} className="col-md-4 mb-4">
                 <div className={`card ${styles.productCard}`}>
                   <img src={product.image} alt={product.name} className={`card-img-top ${styles.productImage}`} />
                   <div className="card-body">
                     <div className="d-flex justify-content-center align-items-center">
                       <div className="text-center">
-                        <h5 className={styles.productName} onClick={() => path(`/product/${product.id}`)}>
+                        <h5 className={styles.productName} onClick={() => handleProductClick(product)}>
                           {product.productName}
                         </h5>
                         <p className="card-text">Price: ${product.price} / lb</p>
