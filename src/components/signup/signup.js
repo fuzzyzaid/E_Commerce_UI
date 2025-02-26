@@ -105,7 +105,7 @@ function Signup() {
             )}
             <label htmlFor="phoneNumber">Phone Number</label>
             <input
-              type="number"
+              type="text"
               onChange={(e) => setPhoneNumber(e.target.value)}
               name="phoneNumber"
               id="phoneNumber"
