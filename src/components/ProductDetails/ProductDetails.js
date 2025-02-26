@@ -1,46 +1,50 @@
-import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect, useState, useContext } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 import styles from "./ProductDetails.module.css";
 import Header from "../Header/Header";
+import { CartContext } from "../CartContext/CartContext";
 
 function ProductDetails() {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const { product } = location.state || {};
+  const { addToCart } = useContext(CartContext);
+  const { productId } = useParams();
+  const [product, setProduct] = useState(null);
+  const [quantity, setQuantity] = useState(1);
+
+  useEffect(() => {
+    axios.get(`/getProduct/${productId}`)
+      .then(response => setProduct(response.data))
+      .catch(error => console.error("Error fetching product details", error));
+  }, [productId]);
 
   if (!product) {
-    return <h2 className={styles.error}>Product not found!</h2>;
+    return <div>Loading...</div>;
   }
 
   return (
-    <>
+    <div className={styles.container}>
       <Header />
-      <div className={styles.container}>
-        <div className={styles.productCard}>
-          <img src={product.image} alt={product.productName} className={styles.productImage} />
-          <div className={styles.details}>
-            <h2 className={styles.productName}>{product.productName}</h2>
-            <p className={styles.description}>{product.description || "No description available."}</p>
-            <h3 className={styles.price}>Price: ${product.price}</h3>
-            <div className={styles.quantityContainer}>
-              <input
-                type="number"
-                min="1"
-                defaultValue="1"
-                className={`${styles.quantityInputs} form-control text-center`}
-              />
-            </div>
-            <button className={styles.addToCartButton}>Add to Cart</button>
-            <button
-              className={styles.backButton}
-              onClick={() => navigate("/shop")}  // Adjust the path to the shop page if needed
-            >
-              Back to Shop
-            </button>
+      <div className={styles.productDetails}>
+        <img src={`/${product.image}`} alt={product.productName} className={styles.productImage} />
+        <div className={styles.info}>
+          <h2>{product.productName}</h2>
+          <p>{product.description}</p>
+          <p>Price: ${product.price}</p>
+          <div className={styles.quantityBox}>
+            <input 
+              type="number" 
+              min="1" 
+              value={quantity} 
+              onChange={(e) => setQuantity(e.target.value)} 
+              className="form-control w-25 text-center" 
+            />
           </div>
+          <button onClick={() => addToCart(product, quantity)} className={styles.addToCartButton}>
+            Add to Cart
+          </button>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

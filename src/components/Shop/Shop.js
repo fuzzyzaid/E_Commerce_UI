@@ -1,17 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect ,useContext} from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styles from "./Shop.module.css";  
 import Header from "../Header/Header";
+import { CartContext } from "../CartContext/CartContext";
 
 function Shop() {
   const path = useNavigate();
+  const { addToCart } = useContext(CartContext);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState(["All"]);
   const [currentCategory, setCurrentCategory] = useState("All");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [displayedProducts, setDisplayedProducts] = useState([]);
+  const [quantities, setQuantities] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,6 +59,14 @@ function Shop() {
       setDisplayedProducts(filteredProducts);
     }
   };
+  
+  const handleQuantityChange = (productId, value) => {
+    setQuantities(prevQuantities => ({
+      ...prevQuantities,
+      [productId]: value,
+    }));
+  };
+
 
   const handleProductClick = (product) => {
     path("/productdetails", { state: { product } });
@@ -101,8 +112,9 @@ function Shop() {
                       </div>
                     </div>
                     <div className="d-flex justify-content-between align-items-center">
-                      <input type="number" min="1" defaultValue="1" className="form-control w-25 text-center" />
-                      <button className={`${styles.addToCartButton}`}>Add to Cart</button>
+                      <input type="number" min="1" defaultValue="1" value={quantities[product.productId] || 1} 
+                             onChange={(e) => handleQuantityChange(product.productId, e.target.value)}  className="form-control w-25 text-center" />
+                      <button onClick={() => addToCart(product, quantities[product.productId] || 1)} className={`${styles.addToCartButton}`}>Add to Cart</button>
                     </div>
                   </div>
                 </div>
