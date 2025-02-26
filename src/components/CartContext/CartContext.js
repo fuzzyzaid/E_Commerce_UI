@@ -1,44 +1,48 @@
 import React, { createContext, useState, useEffect } from "react";
 
-// Create context
 export const CartContext = createContext();
 
 const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
-  const [user, setUser] = useState(null); // Manage user authentication
+  const [user, setUser] = useState(null); 
 
   useEffect(() => {
-    // Load cart from localStorage if it exists
     const storedCart = localStorage.getItem("cart");
     if (storedCart) {
       setCart(JSON.parse(storedCart));
     }
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
   }, []);
 
   useEffect(() => {
-    // Save cart to localStorage
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem("user", JSON.stringify(user));
+    } else {
+      localStorage.removeItem("user");
+    }
+  }, [user]);
+
   const addToCart = (product, quantity = 1) => {
-    // Parse quantity to ensure it's a number
-    const parsedQuantity = parseInt(quantity, 10);
-  
     setCart((prevCart) => {
       const existingItem = prevCart.find((item) => item.productId === product.productId);
-  
       if (existingItem) {
         return prevCart.map((item) =>
           item.productId === product.productId
-            ? { ...item, quantity: item.quantity + parsedQuantity }
+            ? { ...item, quantity: item.quantity + quantity }
             : item
         );
       } else {
-        return [...prevCart, { ...product, quantity: parsedQuantity }];
+        return [...prevCart, { ...product, quantity }];
       }
     });
   };
-  
 
   const removeFromCart = (productId) => {
     setCart((prevCart) => prevCart.filter((item) => item.productId !== productId));

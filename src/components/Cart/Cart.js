@@ -22,8 +22,13 @@ function Cart() {
     <>
       <Header />
       <div className={styles.container}>
+      {user ? (
+          <p className={styles.userInfo}>Logged in as: <strong>{user.fullName}</strong></p>
+        ) : (
+          <p className={styles.userInfo}>You are not logged in.</p>
+        )}
         {cart.length === 0 ? (
-          <h3 className={styles.emptyCart}>Your cart is empty.</h3>
+          <h3 className={styles.emptyCart}>Your cart is empty.</h3> 
         ) : (
           <div className={styles.cartItems}>
             {cart.map((item) => (
