@@ -1,102 +1,124 @@
 .headerContainer {
-    background-color: #4c8bd7;
-    padding: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  background-color: #1E3A8A; /* Deep navy - high contrast */
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.logo {
+  width: 50px;
+  height: auto;
+}
+
+.brandName {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.nav {
+  display: flex;
+}
+
+.navList {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navLink {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.navLink:hover,
+.navLink:focus {
+  background-color: #fff; /* Accessible blue hover */
+  outline: none;
+  color: #1E3A8A;
+}
+
+/* .active {
+  background-color: #2563EB;
+} */
+
+.menuToggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.menuIcon,
+.menuIcon::before,
+.menuIcon::after {
+  display: block;
+  background-color: #fff;
+  height: 3px;
+  width: 24px;
+  border-radius: 2px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.menuIcon::before,
+.menuIcon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+}
+
+.menuIcon::before {
+  top: -8px;
+}
+
+.menuIcon::after {
+  top: 8px;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .menuToggle {
+    display: block;
   }
-  
-  .logo {
-    width: 80px; /* Adjust the width as needed */
-    height: auto; /* Maintain aspect ratio */
-    margin-right: 10px; /* Add some spacing */
-  }
-  
+
   .nav {
-    display: flex;
-    justify-content: center; /* Center the navigation links */
-    align-items: center;
-    flex: 1; /* Make the nav take up the remaining space */
-  }
-  
-  .navList {
-    display: flex;
-    justify-content: center;
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .navItem {
-    margin-right: 20px;
-  }
-  
-  .navLink {
-    text-decoration: none;
-    color: #000;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 1.2rem;
-  }
-  
-  .navLink:hover {
-    background-color: #000;
-    color: #d6d2c4;
-  }
-  
-  .menuIcon {
-    display: none;
+    position: absolute;
+    top: 64px;
+    right: 0;
+    background-color: #1E3A8A;
+    width: 100%;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
     flex-direction: column;
-    cursor: pointer;
   }
-  
-  .closeIcon {
-    display: none;
-    cursor: pointer;
-    font-size: 1.8rem;
+
+  .open {
+    max-height: 300px; /* Enough for menu items */
   }
-  
-  .iconLine {
-    width: 25px;
-    height: 3px;
-    background-color: #000;
-    margin: 3px 0;
+
+  .navList {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0;
   }
-  
-  @media (max-width: 768px) {
-    .nav {
-      flex-direction: column;
-      align-items: center;
-    }
-  
-    .navList {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-    }
-  
-    .navItem {
-      margin: 10px 0;
-    }
-  
-    .menuIcon {
-      display: flex;
-      position: absolute;
-      right: 20px; /* Move the menu icon to the right */
-    }
-  
-    .openMenu .menuIcon {
-      display: none;
-    }
-  
-    .openMenu .closeIcon {
-      display: block;
-      position: absolute;
-      right: 20px; /* Ensure the close icon is also on the right */
-    }
-  
-    .openMenu .navList {
-      display: flex;
-    }
-  }
-  
+}
