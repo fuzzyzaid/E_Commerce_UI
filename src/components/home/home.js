@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom"; // import navigate hook
 import axios from "axios";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -9,6 +10,7 @@ import { CartContext } from "../CartContext/CartContext";
 import DialogBox from "../AddToCartDialogBox/AddToCartDialogBox"; // import the dialog
 
 function Home() {
+  const navigate = useNavigate();
   const { addToCart } = useContext(CartContext);
   const [products, setProducts] = useState([]);
   const [quantities, setQuantities] = useState({});
@@ -34,6 +36,10 @@ function Home() {
     addToCart(product, qty);
     setDialogData({ productName: product.productName, quantity: qty });
     setDialogOpen(true);
+  };
+
+  const handleProductClick = (product) => {
+    navigate("/productdetails", { state: { product } });
   };
 
   const featuredProducts = products.slice(0, 5);
@@ -72,7 +78,12 @@ function Home() {
               alt={product.productName}
               className={styles.productImage}
             />
-            <h3>{product.productName}</h3>
+            <h3
+              className={styles.productName}
+              onClick={() => handleProductClick(product)}
+            >
+              {product.productName}
+            </h3>
             <p className={styles.price}>${product.price} / lb</p>
             <div className={styles.quantityBox}>
               <input
@@ -104,7 +115,12 @@ function Home() {
               alt={product.productName}
               className={styles.productImage}
             />
-            <h3>{product.productName}</h3>
+            <h3
+              className={styles.productName}
+              onClick={() => handleProductClick(product)}
+            >
+              {product.productName}
+            </h3>
             <p className={styles.price}>${product.price}</p>
             <div className={styles.quantityBox}>
               <input

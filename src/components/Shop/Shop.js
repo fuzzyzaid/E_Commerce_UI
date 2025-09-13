@@ -68,6 +68,7 @@ function Shop() {
   };
 
   const handleProductClick = (product) => {
+    console.log(product);
     navigate("/productdetails", { state: { product } });
   };
 
