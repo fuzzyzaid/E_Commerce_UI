@@ -45,7 +45,7 @@
 /* Product Cards */
 .card, .gridItem {
   background: #fff;
-  color: #000;
+  color: #1E3A8A;
   padding: 1rem;
   border-radius: 12px;
   text-align: center;
@@ -57,6 +57,22 @@
   box-shadow: 0 8px 20px rgba(0,0,0,0.2);
 }
 
+/* Product name styling - match Shop page */
+.card h3,
+.gridItem h3 {
+  cursor: pointer;
+  color: #1E3A8A;
+  font-weight: 600;       /* match Shop's boldness */
+  margin: 0.8rem 0 0.4rem; /* same spacing as Shop */
+  font-size: 1.1rem;      /* match Shop's font size */
+  text-align: center;
+}
+.card h3:hover,
+.gridItem h3:hover {
+  text-decoration: underline;
+}
+
+
 .productImage {
   width: 100%;
   height: 200px;
@@ -65,11 +81,13 @@
 }
 
 .price {
-  font-size: 1.2rem;
-  font-weight: 600;
+  font-size: 1rem;        /* match Shop's font size */
+  font-weight: 500;       /* match Shop's weight */
   color: #1E3A8A;
-  margin: 0.5rem 0;
+  margin-bottom: 0.8rem;  /* same spacing as Shop */
+  text-align: center;
 }
+
 
 /* Quantity Box */
 .quantityBox {

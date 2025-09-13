@@ -6,11 +6,14 @@ import "slick-carousel/slick/slick-theme.css";
 import styles from "./Home.module.css";
 import Header from "../Header/Header";
 import { CartContext } from "../CartContext/CartContext";
+import DialogBox from "../AddToCartDialogBox/AddToCartDialogBox"; // import the dialog
 
 function Home() {
   const { addToCart } = useContext(CartContext);
   const [products, setProducts] = useState([]);
   const [quantities, setQuantities] = useState({});
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogData, setDialogData] = useState({ productName: "", quantity: 1 });
 
   useEffect(() => {
     axios
@@ -24,6 +27,13 @@ function Home() {
       ...prev,
       [productId]: value,
     }));
+  };
+
+  const handleAddToCart = (product) => {
+    const qty = quantities[product.productId] || 1;
+    addToCart(product, qty);
+    setDialogData({ productName: product.productName, quantity: qty });
+    setDialogOpen(true);
   };
 
   const featuredProducts = products.slice(0, 5);
@@ -63,7 +73,7 @@ function Home() {
               className={styles.productImage}
             />
             <h3>{product.productName}</h3>
-            <p className={styles.price}>${product.price}</p>
+            <p className={styles.price}>${product.price} / lb</p>
             <div className={styles.quantityBox}>
               <input
                 type="number"
@@ -75,9 +85,7 @@ function Home() {
               />
             </div>
             <button
-              onClick={() =>
-                addToCart(product, quantities[product.productId] || 1)
-              }
+              onClick={() => handleAddToCart(product)}
               className={styles.addToCartButton}
             >
               Add to Cart
@@ -109,9 +117,7 @@ function Home() {
               />
             </div>
             <button
-              onClick={() =>
-                addToCart(product, quantities[product.productId] || 1)
-              }
+              onClick={() => handleAddToCart(product)}
               className={styles.addToCartButton}
             >
               Add to Cart
@@ -119,6 +125,14 @@ function Home() {
           </div>
         ))}
       </div>
+
+      {/* Dialog Box */}
+      <DialogBox
+        isOpen={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        productName={dialogData.productName}
+        quantity={dialogData.quantity}
+      />
     </div>
   );
 }
