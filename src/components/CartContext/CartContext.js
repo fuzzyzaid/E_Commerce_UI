@@ -30,19 +30,20 @@ const CartProvider = ({ children }) => {
   }, [user]);
 
   const addToCart = (product, quantity = 1) => {
-    setCart((prevCart) => {
-      const existingItem = prevCart.find((item) => item.productId === product.productId);
-      if (existingItem) {
-        return prevCart.map((item) =>
-          item.productId === product.productId
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
-        );
-      } else {
-        return [...prevCart, { ...product, quantity }];
-      }
-    });
-  };
+  const qty = Number(quantity); // ensure it's a number
+  setCart((prevCart) => {
+    const existingItem = prevCart.find((item) => item.productId === product.productId);
+    if (existingItem) {
+      return prevCart.map((item) =>
+        item.productId === product.productId
+          ? { ...item, quantity: item.quantity + qty }
+          : item
+      );
+    } else {
+      return [...prevCart, { ...product, quantity: qty }];
+    }
+  });
+};
 
   const removeFromCart = (productId) => {
     setCart((prevCart) => prevCart.filter((item) => item.productId !== productId));
