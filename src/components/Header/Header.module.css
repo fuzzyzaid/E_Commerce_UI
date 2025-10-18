@@ -1,5 +1,9 @@
+/* Header.module.css
+   Unified styles so user name and logout icon match navLink appearance and hover
+*/
+
 .headerContainer {
-  background-color: #1E3A8A; /* Deep navy - high contrast */
+  background-color: #1E3A8A;
   color: #fff;
   display: flex;
   align-items: center;
@@ -8,8 +12,10 @@
   position: sticky;
   top: 0;
   z-index: 1000;
+  gap: 1rem;
 }
 
+/* Branding */
 .logoContainer {
   display: flex;
   align-items: center;
@@ -19,15 +25,19 @@
 .logo {
   width: 50px;
   height: auto;
+  display: block;
 }
 
 .brandName {
   font-size: 1.25rem;
   font-weight: 700;
+  color: #fff;
 }
 
+/* Navigation */
 .nav {
   display: flex;
+  align-items: center;
 }
 
 .navList {
@@ -36,34 +46,50 @@
   list-style: none;
   margin: 0;
   padding: 0;
+  align-items: center;
 }
 
+/* Standard nav link */
 .navLink {
   color: #fff;
   text-decoration: none;
   font-size: 1rem;
   font-weight: 500;
   padding: 0.5rem;
-  border-radius: 4px;
+  border-radius: 6px;
   transition: background-color 0.2s ease, color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
+/* Hover / focus states (navLink) */
 .navLink:hover,
 .navLink:focus {
-  background-color: #fff; /* Accessible blue hover */
+  background-color: #fff; /* Accessible white hover */
   outline: none;
   color: #1E3A8A;
 }
 
-/* .active {
-  background-color: #2563EB;
-} */
+/* Active link subtle style */
+.active {
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
 
+/* Menu toggle (hamburger) */
 .menuToggle {
   display: none;
   background: none;
   border: none;
   cursor: pointer;
+  padding: 6px;
+  margin-left: 8px;
+  border-radius: 6px;
+}
+
+.menuToggle:focus {
+  outline: 2px solid rgba(255,255,255,0.18);
 }
 
 .menuIcon,
@@ -93,6 +119,69 @@
   top: 8px;
 }
 
+/* User block: keep styling aligned with navLink */
+.userBlock {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0;
+  border-radius: 6px;
+}
+
+/* Make userName use same typography and spacing as .navLink */
+.userName {
+  color: #fff;
+  font-weight: 500; /* same as .navLink */
+  font-size: 1rem; /* same as .navLink */
+  padding: 0.5rem; /* same vertical padding as .navLink */
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 160px;
+}
+
+/* Logout icon button made to match navLink visuals exactly */
+.logoutIconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  padding: 0.5rem; /* same padding as .navLink */
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  color: #fff;
+}
+
+/* Hover / focus state for logout matches navLink hover */
+.logoutIconButton:hover,
+.logoutIconButton:focus
+ {
+  background-color: #fff;
+  color: #1E3A8A;
+  outline: none;
+}
+
+/* Icon sizing */
+.logoutIcon {
+  width: 18px;
+  height: 18px;
+  display: block;
+  color: inherit;
+}
+
+/* Ensure nav items layout keeps spacing on small screens */
+.navList li {
+  display: flex;
+  align-items: center;
+}
+
 /* Mobile Styles */
 @media (max-width: 768px) {
   .menuToggle {
@@ -109,16 +198,44 @@
     overflow: hidden;
     transition: max-height 0.3s ease;
     flex-direction: column;
+    align-items: center;
+    padding: 0;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
   }
 
   .open {
-    max-height: 300px; /* Enough for menu items */
+    max-height: 360px; /* Enough for menu items */
   }
 
   .navList {
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: 0.75rem;
     padding: 1rem 0;
+    width: 100%;
+  }
+
+  .navList li {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .navLink {
+    width: 90%;
+    justify-content: center;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+  }
+
+  .userBlock {
+    width: 90%;
+    justify-content: space-between;
+    padding: 0.5rem 0.5rem;
+    border-radius: 8px;
+  }
+
+  .userName {
+    max-width: 120px;
+    text-align: left;
   }
 }

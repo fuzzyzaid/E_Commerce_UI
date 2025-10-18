@@ -1,12 +1,12 @@
 import React, { useState, useContext } from 'react';
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { CartContext } from "../CartContext/CartContext";
+import { UserContext } from "../UserContext/UserContext";
 import styles from "./Login.module.css";
 
 function Login() {
     const path = useNavigate();
-    const { setUser } = useContext(CartContext); // Use context to set user
+    const { setUser } = useContext(UserContext); // Use context to set user
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [formErrors, setFormErrors] = useState({});

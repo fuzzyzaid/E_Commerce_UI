@@ -1,11 +1,22 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { FiLogOut } from "react-icons/fi";
 import styles from "./Header.module.css";
+import { UserContext } from "../UserContext/UserContext";
 
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const { user, logout } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const toggleMenu = () => setIsOpen(!isOpen);
+
+  const handleLogout = () => {
+    if (typeof logout === "function") logout();
+    else localStorage.removeItem("user");
+    setIsOpen(false);
+    navigate("/");
+  };
 
   return (
     <header className={styles.headerContainer}>
@@ -36,6 +47,7 @@ function Header() {
               Home
             </NavLink>
           </li>
+
           <li>
             <NavLink
               to="/shop"
@@ -47,6 +59,7 @@ function Header() {
               Shop
             </NavLink>
           </li>
+
           <li>
             <NavLink
               to="/cart"
@@ -58,17 +71,35 @@ function Header() {
               Cart
             </NavLink>
           </li>
-          <li>
-            <NavLink
-              to="/logout"
-              className={({ isActive }) =>
-                `${styles.navLink} ${isActive ? styles.active : ""}`
-              }
-              onClick={() => setIsOpen(false)}
-            >
-              Logout
-            </NavLink>
-          </li>
+
+          {user ? (
+            <li className={styles.userBlock}>
+              <span className={styles.userName}>
+                {user.name || user.fullName || user.email}
+              </span>
+
+              <button
+                onClick={handleLogout}
+                className={styles.logoutIconButton}
+                title="Logout"
+                aria-label="Logout"
+              >
+                <FiLogOut className={styles.logoutIcon} />
+              </button>
+            </li>
+          ) : (
+            <li>
+              <NavLink
+                to="/login"
+                className={({ isActive }) =>
+                  `${styles.navLink} ${isActive ? styles.active : ""}`
+                }
+                onClick={() => setIsOpen(false)}
+              >
+                Login
+              </NavLink>
+            </li>
+          )}
         </ul>
       </nav>
     </header>

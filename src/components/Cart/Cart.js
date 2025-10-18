@@ -1,34 +1,40 @@
 import React, { useContext } from "react";
-import { CartContext } from "../CartContext/CartContext";
 import { useNavigate } from "react-router-dom";
+import { CartContext } from "../CartContext/CartContext";
+import { UserContext } from "../UserContext/UserContext";
 import styles from "./Cart.module.css";
 import Header from "../Header/Header";
 
 function Cart() {
-  const { cart, removeFromCart, updateQuantity, user } = useContext(CartContext);
+  const { cart, removeFromCart, updateQuantity } = useContext(CartContext);
+  const { user } = useContext(UserContext); // read user from UserContext (separate)
   const navigate = useNavigate();
 
   const handleCheckout = () => {
     if (!user) {
       alert("You must be logged in to proceed to checkout.");
-      navigate("/login"); // Redirect to login if not logged in
+      navigate("/login");
     } else {
-      alert("Proceeding to checkout...");
       navigate("/checkout");
     }
   };
+
+  const total = cart.reduce((sum, item) => sum + Number(item.price || 0) * Number(item.quantity || 0), 0);
 
   return (
     <>
       <Header />
       <div className={styles.container}>
-      {user ? (
-          <p className={styles.userInfo}>Logged in as: <strong>{user.fullName}</strong></p>
+        {/* {user ? (
+          <p className={styles.userInfo}>
+            Logged in as: <strong>{user.fullName || user.name || user.email}</strong>
+          </p>
         ) : (
           <p className={styles.userInfo}>You are not logged in.</p>
-        )}
+        )} */}
+
         {cart.length === 0 ? (
-          <h3 className={styles.emptyCart}>Your cart is empty.</h3> 
+          <h3 className={styles.emptyCart}>Your cart is empty.</h3>
         ) : (
           <div className={styles.cartItems}>
             {cart.map((item) => (
@@ -38,11 +44,22 @@ function Cart() {
                   <h3>{item.productName}</h3>
                   <p>Price: ${item.price}</p>
                   <div className={styles.quantityControl}>
-                    <button onClick={() => updateQuantity(item.productId, Math.max(item.quantity - 1, 1))}>-</button>
+                    <button
+                      onClick={() =>
+                        updateQuantity(item.productId, Math.max(Number(item.quantity) - 1, 1))
+                      }
+                    >
+                      -
+                    </button>
                     <span>{item.quantity}</span>
-                    <button onClick={() => updateQuantity(item.productId, item.quantity + 1)}>+</button>
+                    <button onClick={() => updateQuantity(item.productId, Number(item.quantity) + 1)}>
+                      +
+                    </button>
                   </div>
-                  <button className={styles.removeButton} onClick={() => removeFromCart(item.productId)}>
+                  <button
+                    className={styles.removeButton}
+                    onClick={() => removeFromCart(item.productId)}
+                  >
                     Remove
                   </button>
                 </div>
@@ -50,7 +67,7 @@ function Cart() {
             ))}
 
             <div className={styles.cartFooter}>
-              <h3>Total: ${cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2)}</h3>
+              <h3>Total: ${total.toFixed(2)}</h3>
               <button className={styles.checkoutButton} onClick={handleCheckout}>
                 Proceed to Checkout
               </button>
