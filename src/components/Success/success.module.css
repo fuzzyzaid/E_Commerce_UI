@@ -1,0 +1,89 @@
+.wrapper {
+  width: 90%;
+  max-width: 780px;
+  margin: 48px auto;
+  padding: 20px;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 36px 28px;
+  box-shadow: 0 10px 30px rgba(9, 30, 66, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  text-align: center;
+}
+
+.icon {
+  color: #16a34a; /* green */
+  width: 64px;
+  height: 64px;
+}
+
+.title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  color: #1E3A8A;
+}
+
+.message {
+  margin: 0;
+  font-size: 16px;
+  color: #0b1530;
+  max-width: 560px;
+}
+
+.name {
+  color: #1E3A8A;
+  font-weight: 700;
+}
+
+.actions {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.homeButton {
+  background-color: #1E3A8A;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.06s ease;
+}
+
+.homeButton:hover {
+  background-color: #16306b;
+}
+
+/* Responsive */
+@media (max-width: 720px) {
+  .card {
+    padding: 24px 18px;
+  }
+
+  .icon {
+    width: 56px;
+    height: 56px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .message {
+    font-size: 15px;
+  }
+
+  .homeButton {
+    width: 100%;
+  }
+}

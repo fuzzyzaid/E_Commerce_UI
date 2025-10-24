@@ -2,17 +2,12 @@ import React, { createContext, useState, useEffect } from "react";
 
 export const UserContext = createContext();
 
-/**
- * UserProvider
- * - keeps track of authenticated user
- * - persists user to localStorage
- * - exposes setUser and logout
- */
 export function UserProvider({ children }) {
   const [user, setUser] = useState(null);
 
   // load user from localStorage on mount
   useEffect(() => {
+    console.log("UserProvider user:", user)
     try {
       const stored = localStorage.getItem("user");
       if (stored) setUser(JSON.parse(stored));

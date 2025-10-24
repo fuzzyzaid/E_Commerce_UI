@@ -1,3 +1,4 @@
+/* container / layout */
 .container {
   width: 80%;
   margin: auto;
@@ -18,71 +19,115 @@
   color: gray;
 }
 
+/* cart list */
 .cartItems {
   display: flex;
   flex-direction: column;
   gap: 25px;
 }
 
+/* single cart item */
 .cartItem {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   padding: 20px;
   border-radius: 10px;
   background: #F5F5F5;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  gap: 20px;
 }
 
+/* product image */
 .productImage {
-  width: 250px;
-  height: 200px;
+  width: 220px;
+  height: 160px;
   object-fit: cover;
   border-radius: 8px;
-  margin-right: 25px;
+  flex-shrink: 0;
 }
 
+/* details column (title, price row, actions) */
 .details {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 8px;
 }
 
+/* product title */
 .details h3 {
   font-size: 20px;
   font-weight: 700;
   color: #000;
+  margin: 0;
 }
 
-.details p {
-  font-size: 18px;
-  font-weight: 600;
-  color: #000;
-}
-
-.quantityControl {
+/* priceRow: unit price × quantity controls = item total (single row) */
+.priceRow {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-top: 10px;
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 4px 0;
+  width: 100%;
+  flex-wrap: nowrap;
 }
 
+/* unit price text */
+.unitPrice {
+  color: #1E3A8A;
+  min-width: 90px;
+}
+
+/* multiply symbol */
+.multiply {
+  font-weight: 700;
+  color: #333;
+}
+
+/* quantity control stays compact inline */
+.quantityControl {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+/* quantity buttons */
 .quantityControl button {
   background: #4c8bd7;
-  color: black;
+  color: #fff;
   border: none;
-  padding: 8px 12px;
+  padding: 6px 10px;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 16px;
   border-radius: 5px;
-  transition: 0.3s;
+  transition: background 0.15s ease, color 0.15s ease;
+  line-height: 1;
 }
 
 .quantityControl button:hover {
-  background: black;
-  color: #4c8bd7;
+  background: #15306d;
 }
 
+/* quantity number display */
+.quantityControl span {
+  min-width: 32px;
+  text-align: center;
+  font-weight: 600;
+  display: inline-block;
+}
+
+/* push itemTotal to the far right of the same row */
+.itemTotal {
+  margin-left: auto;
+  font-weight: 700;
+  color: #2563EB;
+  white-space: nowrap;
+}
+
+/* Remove button positioned below the row (or to the right when wide) */
 .removeButton {
   background: #dc3545;
   color: white;
@@ -90,14 +135,16 @@
   border: none;
   cursor: pointer;
   border-radius: 5px;
-  transition: 0.3s;
-  margin-left: auto;
+  transition: background 0.3s;
+  align-self: flex-start;
+  margin-top: 8px;
 }
 
 .removeButton:hover {
   background: #c82333;
 }
 
+/* cart footer */
 .cartFooter {
   display: flex;
   justify-content: space-between;
@@ -121,10 +168,64 @@
   font-size: 18px;
   font-weight: bold;
   border-radius: 5px;
-  transition: 0.3s;
+  transition: background 0.3s, color 0.3s;
 }
 
 .checkoutButton:hover {
-  background: black;
-  color: #4c8bd7;
+  background: #15306d;
+  color: #fff;
+}
+
+/* responsive adjustments */
+@media (max-width: 900px) {
+  .container {
+    width: 94%;
+    padding: 20px;
+  }
+
+  .productImage {
+    width: 180px;
+    height: 130px;
+  }
+
+  .priceRow {
+    gap: 8px;
+  }
+
+  .unitPrice {
+    min-width: 80px;
+  }
+
+  .itemTotal {
+    margin-left: 8px; /* no full auto space on smaller screens */
+  }
+}
+
+@media (max-width: 600px) {
+  .cartItem {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .productImage {
+    width: 100%;
+    height: 180px;
+  }
+
+  .priceRow {
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .itemTotal {
+    margin-left: 0;
+    width: 100%;
+    text-align: right;
+  }
+
+  .removeButton {
+    align-self: stretch;
+    margin-top: 12px;
+  }
 }

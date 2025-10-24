@@ -7,6 +7,9 @@ import Shop from "./components/Shop/Shop";
 import Cart from "./components/Cart/Cart";
 import Logout from "./components/Logout/Logout";
 import ProductDetails from "./components/ProductDetails/ProductDetails";
+import Checkout from "./components/Checkout/Checkout";
+import Success from "./components/Success/Success";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 
 function App() {
   return (
@@ -19,6 +22,23 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/productdetails" element={<ProductDetails />} />
+        <Route
+          path="/checkout"
+          element={
+            <ProtectedRoute>
+              <Checkout />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/success"
+          element={
+            <ProtectedRoute>
+              <Success />
+            </ProtectedRoute>
+          }
+      />
+
       </Routes>
    </>
   );

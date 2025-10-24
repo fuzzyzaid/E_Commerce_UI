@@ -7,7 +7,7 @@ import Header from "../Header/Header";
 
 function Cart() {
   const { cart, removeFromCart, updateQuantity } = useContext(CartContext);
-  const { user } = useContext(UserContext); // read user from UserContext (separate)
+  const { user } = useContext(UserContext);
   const navigate = useNavigate();
 
   const handleCheckout = () => {
@@ -19,43 +19,65 @@ function Cart() {
     }
   };
 
-  const total = cart.reduce((sum, item) => sum + Number(item.price || 0) * Number(item.quantity || 0), 0);
+  const total = cart.reduce(
+    (sum, item) => sum + Number(item.price || 0) * Number(item.quantity || 0),
+    0
+  );
 
   return (
     <>
       <Header />
       <div className={styles.container}>
-        {/* {user ? (
-          <p className={styles.userInfo}>
-            Logged in as: <strong>{user.fullName || user.name || user.email}</strong>
-          </p>
-        ) : (
-          <p className={styles.userInfo}>You are not logged in.</p>
-        )} */}
-
         {cart.length === 0 ? (
           <h3 className={styles.emptyCart}>Your cart is empty.</h3>
         ) : (
           <div className={styles.cartItems}>
             {cart.map((item) => (
               <div key={item.productId} className={styles.cartItem}>
-                <img src={item.image} alt={item.productName} className={styles.productImage} />
+                <img
+                  src={item.image}
+                  alt={item.productName}
+                  className={styles.productImage}
+                />
                 <div className={styles.details}>
                   <h3>{item.productName}</h3>
-                  <p>Price: ${item.price}</p>
-                  <div className={styles.quantityControl}>
-                    <button
-                      onClick={() =>
-                        updateQuantity(item.productId, Math.max(Number(item.quantity) - 1, 1))
-                      }
-                    >
-                      -
-                    </button>
-                    <span>{item.quantity}</span>
-                    <button onClick={() => updateQuantity(item.productId, Number(item.quantity) + 1)}>
-                      +
-                    </button>
+
+                  <div className={styles.priceRow}>
+                    <span className={styles.unitPrice}>
+                      ${item.price} / lb
+                    </span>
+
+                    <span className={styles.multiply}>×</span>
+
+                    <div className={styles.quantityControl}>
+                      <button
+                        onClick={() =>
+                          updateQuantity(
+                            item.productId,
+                            Math.max(Number(item.quantity) - 1, 1)
+                          )
+                        }
+                      >
+                        -
+                      </button>
+                      <span>{item.quantity}</span>
+                      <button
+                        onClick={() =>
+                          updateQuantity(
+                            item.productId,
+                            Number(item.quantity) + 1
+                          )
+                        }
+                      >
+                        +
+                      </button>
+                    </div>
+
+                    <span className={styles.itemTotal}>
+                      = ${(item.price * item.quantity).toFixed(2)}
+                    </span>
                   </div>
+
                   <button
                     className={styles.removeButton}
                     onClick={() => removeFromCart(item.productId)}
@@ -68,7 +90,10 @@ function Cart() {
 
             <div className={styles.cartFooter}>
               <h3>Total: ${total.toFixed(2)}</h3>
-              <button className={styles.checkoutButton} onClick={handleCheckout}>
+              <button
+                className={styles.checkoutButton}
+                onClick={handleCheckout}
+              >
                 Proceed to Checkout
               </button>
             </div>

@@ -1,58 +1,65 @@
-import React, { createContext, useState, useEffect, useMemo } from "react";
+// src/components/CartContext/CartContext.jsx
+import React, { createContext, useEffect, useMemo, useState } from "react";
 
 export const CartContext = createContext();
 
+function loadCart() {
+  try {
+    const raw = localStorage.getItem("cart");
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
 const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(() => loadCart());
 
-  // load cart from localStorage on mount
-  useEffect(() => {
-    try {
-      const storedCart = localStorage.getItem("cart");
-      if (storedCart) setCart(JSON.parse(storedCart));
-    } catch (e) {
-      console.error("CartProvider: failed to read cart from localStorage", e);
-    }
-  }, []);
-
-  // persist cart whenever it changes
   useEffect(() => {
     try {
       localStorage.setItem("cart", JSON.stringify(cart));
     } catch (e) {
-      console.error("CartProvider: failed to persist cart to localStorage", e);
+      console.error("CartProvider: persist error", e);
     }
   }, [cart]);
 
+  useEffect(() => {
+    const onStorage = (e) => {
+      if (e.key === "cart") {
+        try {
+          setCart(e.newValue ? JSON.parse(e.newValue) : []);
+        } catch {
+          setCart([]);
+        }
+      }
+    };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, []);
+
   const addToCart = (product, quantity = 1) => {
     const qty = Number(quantity) || 1;
-    setCart((prevCart) => {
-      const existing = prevCart.find((i) => i.productId === product.productId);
+    setCart((prev) => {
+      const existing = prev.find((i) => i.productId === product.productId);
       if (existing) {
-        return prevCart.map((i) =>
+        return prev.map((i) =>
           i.productId === product.productId ? { ...i, quantity: Number(i.quantity) + qty } : i
         );
       }
-      return [...prevCart, { ...product, quantity: qty }];
+      return [...prev, { ...product, quantity: qty }];
     });
   };
 
-  const removeFromCart = (productId) => {
-    setCart((prev) => prev.filter((i) => i.productId !== productId));
-  };
+  const removeFromCart = (productId) => setCart((prev) => prev.filter((i) => i.productId !== productId));
 
   const updateQuantity = (productId, quantity) => {
-    const qty = Number(quantity) || 1;
+    const qty = Math.max(1, Number(quantity) || 1);
     setCart((prev) => prev.map((i) => (i.productId === productId ? { ...i, quantity: qty } : i)));
   };
 
   const clearCart = () => setCart([]);
 
-  // memoize context value to avoid unnecessary re-renders
-  const value = useMemo(
-    () => ({ cart, addToCart, removeFromCart, updateQuantity, clearCart }),
-    [cart]
-  );
+  const value = useMemo(() => ({ cart, addToCart, removeFromCart, updateQuantity, clearCart }), [cart]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };
